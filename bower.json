@@ -1,0 +1,11 @@
+{
+  "name": "openrov-plugin-stablerotation",
+  "description": "A plugin for stabilisation of cameras rotation",
+  "version": "0.0.1",
+  "homepage": "",
+  "main": "public/js/stablerotation.js",
+  "keywords": [
+    "openrov",
+    "plugin"
+  ]
+}

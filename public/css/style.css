@@ -1,0 +1,5 @@
+#video-canvas{
+  -webkit-transition: -webkit-transform 50ms linear;
+  -moz-transition: -moz-transform 50ms linear;
+  transition: transform 50ms linear;
+}
