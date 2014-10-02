@@ -7,7 +7,8 @@
     var total = 0;
     var index = 0;                 
     var average = 0;
-    var isDisabled = false;   
+    var isDisabled = false; 
+    var lastRoll = 0;  
 
     stablerotation = function stablerotation(cockpit) {
       console.log("Loading stablerotation plugin in the browser.");
@@ -29,31 +30,28 @@
       };
     };
     var canvas = document.getElementById('video-canvas');
-    
+    jQuery(function(){
+      setInterval(function(){
+        if(!isDisabled){
+          total = total - readings[index];   
+          readings[index] = lastRoll;
+          total = total + readings[index];        
+          index = index + 1;                    
+          if (index >= smoothReading){     
+            index = 0;  
+          }
+          average = total / smoothReading; 
+          document.getElementById('video-canvas').style.webkitTransform = 'rotate(' + -average + 'deg)';
+        }
+      },64);
+    });
     
     stablerotation.prototype.listen = function listen() {
       var rov = this;
-      setTimeout(function() {
         rov.cockpit.socket.on('navdata', function (data) {
-          if(!isDisabled){
-            total = total - readings[index];   
-            readings[index] = parseFloat(data.roll);
-            total = total + readings[index];        
-            index = index + 1;                    
-            if (index >= smoothReading){     
-              index = 0;  
-            }
-            average = total / smoothReading; 
-            document.getElementById('video-canvas').style.webkitTransform = 'rotate(' + -average + 'deg)';
-          }
+            lastRoll = parseFloat(data.roll);
         });
-      }, 500);
     };
-    
-   
-    var rotation = 0;
-    
-
     window.Cockpit.plugins.push(stablerotation);
 
 }(window, jQuery));
